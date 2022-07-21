@@ -1,4 +1,7 @@
+
 *.js
+!/cron/publish-events.js
+
 !jest.config.js
 *.d.ts
 node_modules
