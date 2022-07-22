@@ -4,6 +4,8 @@ This is a project using the AWS CDK development with TypeScript.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
+![kinesis-ordering-architecture](./docs/Kinesis-ordering.drawio.png "Kinesis Ordering Architecture")
+
 ## How it works
 
 Publish to the Kinesis data stream with a sequence id
