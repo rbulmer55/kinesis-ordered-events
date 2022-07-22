@@ -4,11 +4,16 @@ import { Stack, StackProps, Duration } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { join } from "path";
 import { Runtime, StartingPosition } from "aws-cdk-lib/aws-lambda";
+import { Queue } from "aws-cdk-lib/aws-sqs";
 import * as lambdaEventSources from "aws-cdk-lib/aws-lambda-event-sources";
 
 export class KinesisOrderedEventsStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+
+    const fifoQueue = new Queue(this, "myFifoQueue", {
+      fifo: true,
+    });
 
     const myOrderedStream = new Stream(this, "MyOrderedStream", {
       streamName: "my-ordered-stream",
@@ -25,7 +30,9 @@ export class KinesisOrderedEventsStack extends Stack {
         entry: join(__dirname, "../src/kinesis/event-handler.ts"),
         memorySize: 512,
         handler: "handler",
-        environment: {},
+        environment: {
+          QUEUE_URL: fifoQueue.queueUrl,
+        },
         bundling: {
           minify: true,
           externalModules: ["aws-sdk"],
